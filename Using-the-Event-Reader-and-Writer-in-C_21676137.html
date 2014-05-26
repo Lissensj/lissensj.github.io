@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Qeo Native Documentation : Using the Event Reader and Writer in C</title>
+        <title>Qeo Open Source Project Documentation : Using the Event Reader and Writer in C</title>
         <link rel="stylesheet" href="styles/site.css" type="text/css" />
         <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
@@ -13,10 +13,10 @@
                     <div id="breadcrumb-section">
                         <ol id="breadcrumbs">
                             <li class="first">
-                                <span><a href="index.html">Qeo Native Documentation</a></span>
+                                <span><a href="docindex.html">Qeo Open Source Project Documentation</a></span>
                             </li>
                                                     <li>
-                                <span><a href="Customer-Documentation-Space-Home_21675984.html">Customer Documentation Space Home</a></span>
+                                <span><a href="Qeo-Open-Source-Project-Documentation_21675984.html">Qeo Open Source Project Documentation</a></span>
                             </li>
                                                     <li>
                                 <span><a href="Developer-Documents_21676035.html">Developer Documents</a></span>
@@ -34,7 +34,7 @@
                     </div>
                     <h1 id="title-heading" class="pagetitle">
                                                 <span id="title-text">
-                            Qeo Native Documentation : Using the Event Reader and Writer in C
+                            Qeo Open Source Project Documentation : Using the Event Reader and Writer in C
                         </span>
                     </h1>
                 </div>
@@ -48,15 +48,15 @@
     
         
     
-            Created by <span class='author'> lissensj</span> on May 21, 2014
+            Created and last modified by <span class='author'> lissensj</span> on May 26, 2014
                         </div>
                     <div id="main-content" class="wiki-content group">
                     <p>This section describes how to do basic eventing using Qeo, i.e. publishing on, and receiving data from, event Topics. It covers the following topics:</p><p><style type='text/css'>/*<![CDATA[*/
-div.rbtoc1400678506492 {padding: 0px;}
-div.rbtoc1400678506492 ul {list-style: disc;margin-left: 0px;}
-div.rbtoc1400678506492 li {margin-left: 0px;padding-left: 0px;}
+div.rbtoc1401114962208 {padding: 0px;}
+div.rbtoc1401114962208 ul {list-style: disc;margin-left: 0px;}
+div.rbtoc1401114962208 li {margin-left: 0px;padding-left: 0px;}
 
-/*]]>*/</style><div class='toc-macro rbtoc1400678506492'>
+/*]]>*/</style><div class='toc-macro rbtoc1401114962208'>
 <ul class='toc-indentation'>
 <li><a href='#UsingtheEventReaderandWriterinC-WritingData'>Writing Data</a></li>
 <li><a href='#UsingtheEventReaderandWriterinC-ReceivingData'>Receiving Data</a>
@@ -100,7 +100,7 @@ int main(int argc, const char **argv)
     qeo_factory_close(qeo);
     return 0;
 } </pre>
-</div></div><h4 id="UsingtheEventReaderandWriterinC-ReceivingData">Receiving Data</h4><p>In order to subscribe to, and receive data from, an event Topic, you have to create an Event Reader. More specifically, in our example, we need a reader for instances of type <em>org_qeo_sample_simplechat_ChatMessage_t</em>. Creating a reader is done using the <em>qeo_factory_create_event_reader()</em> function. The function expects four arguments:</p><ol><li><p>The previously created Qeo factory to be used for creating the reader.</p></li><li><p>The description of the type for which to create a reader (this should be the same as for the corresponding event writer).</p></li><li><p>The listener to be used for data sample reception and policy update notifications (see <a class="createlink" href="/pages/createpage.action?spaceKey=QND&amp;title=Advanced+Topics&amp;linkCreation=true&amp;fromPageId=21676137">Advanced Topics</a>).</p></li><li><p>An optional user data argument.  The user data will be passed back to the application in all listener callback invocations.</p></li></ol><p>The listener structure can contain two callback functions for data sample reception:</p><ul><li><p>(required) the <em>on_data() callback</em> function that will be called whenever there is new data available (in our example of the type org_qeo_sample_simplechat_ChatMessage_t);</p></li><li><p>(optional) the <em>on_no_more_data()</em> callback function that will be called if all received data has been notified to the application and there is no more data at this moment.</p></li></ul><p>There are situations where the <em>on_data() </em>callback function can be called several times in a short period because a burst of samples arrives.  Depending on the application you may want to postpone certain actions until the burst is completely finished (e.g. redrawing a GUI, storing some data in a database, ...).  To be able to do this, you can use the <em>on_no_more_data()</em> callback. This callback is invoked at the end of such a sample burst. It is best practice that the <em>on_data()</em> call should always aggregate samples and the <em>on_no_more_data(</em>) should trigger a refresh of the UI. </p><h5 id="UsingtheEventReaderandWriterinC-CodeExample:">Code Example:</h5><p>In the following code snippet we will show you how to:</p><ul><li><p>Create an event reader that allows you to receive data samples of the type <em>org_qeo_sample_simplechat_ChatMessage_t</em>;</p></li><li><p>Implement the reader listener notification callback function <em>on_data()</em>.</p></li></ul><div><div class="syntaxhighlighter  java"><p> </p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+</div></div><h4 id="UsingtheEventReaderandWriterinC-ReceivingData">Receiving Data</h4><p>In order to subscribe to, and receive data from, an event Topic, you have to create an Event Reader. More specifically, in our example, we need a reader for instances of type <em>org_qeo_sample_simplechat_ChatMessage_t</em>. Creating a reader is done using the <em>qeo_factory_create_event_reader()</em> function. The function expects four arguments:</p><ol><li><p>The previously created Qeo factory to be used for creating the reader.</p></li><li><p>The description of the type for which to create a reader (this should be the same as for the corresponding event writer).</p></li><li><p>The listener to be used for data sample reception and policy update notifications.</p></li><li><p>An optional user data argument.  The user data will be passed back to the application in all listener callback invocations.</p></li></ol><p>The listener structure can contain two callback functions for data sample reception:</p><ul><li><p>(required) the <em>on_data() callback</em> function that will be called whenever there is new data available (in our example of the type org_qeo_sample_simplechat_ChatMessage_t);</p></li><li><p>(optional) the <em>on_no_more_data()</em> callback function that will be called if all received data has been notified to the application and there is no more data at this moment.</p></li></ul><p>There are situations where the <em>on_data() </em>callback function can be called several times in a short period because a burst of samples arrives.  Depending on the application you may want to postpone certain actions until the burst is completely finished (e.g. redrawing a GUI, storing some data in a database, ...).  To be able to do this, you can use the <em>on_no_more_data()</em> callback. This callback is invoked at the end of such a sample burst. It is best practice that the <em>on_data()</em> call should always aggregate samples and the <em>on_no_more_data(</em>) should trigger a refresh of the UI. </p><h5 id="UsingtheEventReaderandWriterinC-CodeExample:">Code Example:</h5><p>In the following code snippet we will show you how to:</p><ul><li><p>Create an event reader that allows you to receive data samples of the type <em>org_qeo_sample_simplechat_ChatMessage_t</em>;</p></li><li><p>Implement the reader listener notification callback function <em>on_data()</em>.</p></li></ul><div><div class="syntaxhighlighter  java"><p> </p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
 <pre class="theme: Default; brush: cpp; gutter: true" style="font-size:12px;">#include &lt;qeo/api.h&gt;
 
 #include &quot;QSimpleChat_ChatMessage.h&quot;
@@ -146,7 +146,7 @@ int main(int argc, const char **argv)
                 </div>             </div> 
             <div id="footer">
                 <section class="footer-body">
-                    <p>Document generated by Confluence on May 21, 2014 08:21</p>
+                    <p>Document generated by Confluence on May 26, 2014 09:36</p>
                 </section>
             </div>
         </div>     </body>
